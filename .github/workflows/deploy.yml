@@ -1,0 +1,47 @@
+name: Deploy a GitHub Pages
+
+# Publica la landing estática en GitHub Pages en cada push a main.
+# Por defecto se sirve como project page: https://gepres.github.io/nan-kamay-landing/
+# (el `base` está en astro.config.mjs). Para un dominio propio, define las
+# variables de repo SITE_URL=https://tudominio  BASE_PATH=/  y añade public/CNAME.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permisos mínimos que necesita el deploy de Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un solo deploy a la vez; no cancela uno en curso (evita publicaciones a medias).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build con Astro
+        uses: withastro/action@v3
+        env:
+          # Si defines estas variables en el repo (Settings → Variables), el build
+          # usa tu dominio propio en la raíz. Si no, caen al default de la config.
+          SITE_URL: ${{ vars.SITE_URL }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

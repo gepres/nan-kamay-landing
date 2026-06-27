@@ -1,11 +1,12 @@
 ---
-import { getLangFromUrl, base } from '../i18n/utils';
+import { getLangFromUrl, base, withBase } from '../i18n/utils';
 import { content } from '../i18n/content';
 import { SITE } from '../config';
 
 const lang = getLangFromUrl(Astro.url);
 const t = content[lang];
-const home = base(lang) || '/';
+const home = withBase(base(lang) ? base(lang) + '/' : '/');
+const logo = withBase('/icon.png');
 const year = 2026;
 ---
 
@@ -13,7 +14,7 @@ const year = 2026;
   <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4">
     <div class="lg:col-span-2">
       <a href={home} class="flex items-center gap-2.5">
-        <img src="/icon.png" alt="" width="32" height="32" class="h-8 w-8 rounded-lg" />
+        <img src={logo} alt="" width="32" height="32" class="h-8 w-8 rounded-lg" />
         <span class="font-display text-lg font-extrabold tracking-tight">Ñan Kamay</span>
       </a>
       <p class="mt-3 max-w-xs text-sm text-ink-soft">{t.footer.tagline}</p>

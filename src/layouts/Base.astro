@@ -3,15 +3,20 @@ import '@fontsource-variable/sora';
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import { SITE } from '../config';
-import { getLangFromUrl, altLang } from '../i18n/utils';
+import { getLangFromUrl, altLang, withBase, stripBase } from '../i18n/utils';
 import { content } from '../i18n/content';
 
 const lang = getLangFromUrl(Astro.url);
 const t = content[lang];
 const alt = altLang(Astro.url);
-const canonical = new URL(Astro.url.pathname, SITE.domain).href;
-const altHref = new URL(alt.path, SITE.domain).href;
-const ogImage = new URL('/og.png', SITE.domain).href;
+
+// URLs absolutas a partir de `Astro.site` (definido en astro.config) + el prefijo
+// de despliegue. Así canonical/OG/hreflang son correctos tanto en la project page
+// (/nan-kamay-landing/) como en un dominio propio en la raíz.
+const canonical = new URL(withBase(stripBase(Astro.url.pathname)), Astro.site).href;
+const altHref = new URL(alt.path, Astro.site).href;
+const siteRoot = new URL(withBase('/'), Astro.site).href;
+const ogImage = new URL(withBase('/og.png'), Astro.site).href;
 
 // Datos estructurados (schema.org) — ayuda a buscadores a entender que es una
 // app móvil gratuita.
@@ -22,7 +27,7 @@ const jsonLd = {
   description: t.meta.description,
   applicationCategory: 'TravelApplication',
   operatingSystem: 'Android',
-  url: SITE.domain,
+  url: siteRoot,
   image: ogImage,
   inLanguage: lang,
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -40,13 +45,13 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang={lang} href={canonical} />
     <link rel="alternate" hreflang={alt.lang} href={altHref} />
-    <link rel="alternate" hreflang="x-default" href={SITE.domain} />
+    <link rel="alternate" hreflang="x-default" href={siteRoot} />
 
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="/icon.png" />
-    <link rel="apple-touch-icon" href="/icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/png" sizes="48x48" href={withBase('/favicon.png')} />
+    <link rel="icon" type="image/png" sizes="512x512" href={withBase('/icon.png')} />
+    <link rel="apple-touch-icon" href={withBase('/icon.png')} />
+    <link rel="manifest" href={withBase('/site.webmanifest')} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
     <meta name="theme-color" content="#0D1B12" />
     <meta name="author" content="Ñan Kamay" />
     <meta name="robots" content="index, follow" />

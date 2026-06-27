@@ -1,12 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { getLangFromUrl, altLang, base } from '../i18n/utils';
+import { getLangFromUrl, altLang, base, withBase } from '../i18n/utils';
 import { content } from '../i18n/content';
 import { SITE } from '../config';
 
 const lang = getLangFromUrl(Astro.url);
 const t = content[lang];
-const home = base(lang) || '/';
+const home = withBase(base(lang) ? base(lang) + '/' : '/');
+const logo = withBase('/icon.png');
 const alt = altLang(Astro.url);
 
 const links = [
@@ -21,7 +22,7 @@ const links = [
   <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5">
     <!-- Logo -->
     <a href={home} class="flex items-center gap-2.5" aria-label={SITE.name}>
-      <img src="/icon.png" alt="" width="32" height="32" class="h-8 w-8 rounded-lg" />
+      <img src={logo} alt="" width="32" height="32" class="h-8 w-8 rounded-lg" />
       <span class="font-display text-lg font-extrabold tracking-tight">Ñan Kamay</span>
     </a>
 

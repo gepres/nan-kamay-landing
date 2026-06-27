@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { withBase } from '../i18n/utils';
 
 /**
  * Marco de teléfono con pantalla intercambiable.
@@ -16,6 +17,7 @@ interface Props {
   class?: string;
 }
 const { src, alt = '', label = '', icon = 'lucide:navigation', class: cls = '' } = Astro.props;
+const imgSrc = src ? withBase(src) : undefined;
 ---
 
 <div class={`relative mx-auto w-[260px] max-w-full ${cls}`}>
@@ -25,8 +27,8 @@ const { src, alt = '', label = '', icon = 'lucide:navigation', class: cls = '' }
     <div class="absolute left-1/2 top-2.5 z-10 h-5 w-28 -translate-x-1/2 rounded-b-2xl bg-[#0a140e]"></div>
 
     <div class="relative aspect-[9/19] overflow-hidden rounded-[1.9rem] bg-night">
-      {src ? (
-        <img src={src} alt={alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+      {imgSrc ? (
+        <img src={imgSrc} alt={alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
       ) : (
         <div class="flex h-full w-full flex-col">
           <!-- Status bar -->
