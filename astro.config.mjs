@@ -15,8 +15,10 @@ import tailwindcss from '@tailwindcss/vite';
 //     Secrets and variables → Actions → Variables del repo):
 //       SITE_URL=https://nankamay.app   BASE_PATH=/
 //     y añade public/CNAME con el dominio. No hay que tocar código.
-const SITE_URL = process.env.SITE_URL ?? 'https://gepres.github.io';
-const BASE_PATH = process.env.BASE_PATH ?? '/nan-kamay-landing';
+// `||` (no `??`): el workflow inyecta estas vars como cadena vacía cuando no están
+// definidas en el repo, y '' debe caer al default (no romper como URL inválida).
+const SITE_URL = process.env.SITE_URL || 'https://gepres.github.io';
+const BASE_PATH = process.env.BASE_PATH || '/nan-kamay-landing';
 
 export default defineConfig({
   site: SITE_URL,
