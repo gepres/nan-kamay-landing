@@ -1,0 +1,89 @@
+---
+// Página 404 + fallback de "seguir en vivo" para quien NO tiene la app.
+// En Android/iOS con la app instalada, el App Link/Universal Link abre la app
+// directo y esta página nunca se ve. Solo aparece cuando el enlace cayó al
+// navegador (app no instalada o aún sin verificar). El token se lee en cliente.
+import { withBase } from '../i18n/utils';
+import { SITE } from '../config';
+const logo = withBase('/icon.png');
+const home = withBase('/');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Ñan Kamay</title>
+    <meta name="theme-color" content="#0D1B12" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <style>
+      :root { --night:#0d1b12; --line:#2d6a4f; --accent:#f59e0b; --ink:#fff; --soft:#a7c4b5; --muted:#6b8f7b; }
+      * { box-sizing: border-box; }
+      body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
+             background:var(--night); color:var(--ink);
+             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .card { width:100%; max-width:420px; background:rgba(27,67,50,.35); border:1px solid var(--line);
+              border-radius:20px; padding:28px; text-align:center; }
+      .logo { width:64px; height:64px; border-radius:14px; margin:0 auto 16px; display:block; }
+      h1 { font-size:20px; margin:0 0 8px; font-weight:800; }
+      p { color:var(--soft); font-size:14px; line-height:1.5; margin:0 0 8px; }
+      .muted { color:var(--muted); font-size:12px; }
+      .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px;
+             border-radius:12px; font-weight:800; font-size:14px; text-decoration:none; margin-top:12px;
+             border:1px solid transparent; cursor:pointer; }
+      .btn-primary { background:var(--accent); color:var(--night); }
+      .btn-ghost { background:transparent; border-color:var(--line); color:var(--ink); }
+      .hidden { display:none; }
+      .dot { display:inline-block; width:9px; height:9px; border-radius:50%; background:#22c55e; margin-right:6px; vertical-align:middle; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img class="logo" src={logo} alt="Ñan Kamay" width="64" height="64" />
+
+      <!-- Caso: enlace de seguimiento en vivo, sin app -->
+      <div id="follow" class="hidden">
+        <h1><span class="dot"></span>Seguimiento en vivo</h1>
+        <p>Alguien comparte su ubicación en tiempo real contigo con <strong>Ñan Kamay</strong>.</p>
+        <p class="muted">Para verlo en el mapa necesitas la app (gratis). Ábrela si ya la tienes o instálala.</p>
+        <a id="open" class="btn btn-primary" href="#">Abrir en Ñan Kamay</a>
+        <a id="install" class="btn btn-ghost" href={SITE.downloadUrl} target="_blank" rel="noopener">Instalar la app</a>
+      </div>
+
+      <!-- 404 genérico -->
+      <div id="generic" class="hidden">
+        <h1>Página no encontrada</h1>
+        <p>Este enlace no existe o ya expiró.</p>
+        <a class="btn btn-primary" href={home}>Ir al inicio</a>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var path = location.pathname.replace(/\/+$/, '');
+        var m = path.match(/\/seguir\/([^\/]+)$/);
+        var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (m && UUID.test(m[1])) {
+          var token = m[1];
+          var openEl = document.getElementById('open');
+          var playUrl = document.getElementById('install').getAttribute('href');
+          var href;
+          if (/Android/i.test(navigator.userAgent)) {
+            // Android: intent con paquete + fallback a la tienda si no está instalada.
+            href = 'intent://nankamay.trek-peru.com/seguir/' + token +
+                   '#Intent;scheme=https;package=com.gepres.nankamay;S.browser_fallback_url=' +
+                   encodeURIComponent(playUrl) + ';end';
+          } else {
+            href = 'nan-kamay://seguir/' + token;
+          }
+          openEl.setAttribute('href', href);
+          document.getElementById('follow').classList.remove('hidden');
+        } else {
+          document.getElementById('generic').classList.remove('hidden');
+        }
+      })();
+    </script>
+  </body>
+</html>

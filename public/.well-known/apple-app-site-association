@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["REEMPLAZAR_TEAMID.com.gepres.nankamay"],
+        "components": [
+          { "/": "/seguir/*", "comment": "Seguimiento en vivo Ñan Kamay" }
+        ]
+      }
+    ]
+  }
+}
