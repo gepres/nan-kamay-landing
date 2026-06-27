@@ -49,10 +49,20 @@ src/
   y el mockup de muestra se reemplaza por tu foto/video.
 - **Colores y fuentes:** tokens en `src/styles/global.css` (`@theme`), ya alineados con la app.
 
+## SEO
+
+- **Logo real de la app:** `public/icon.png` (la marca de la montaña) se usa en el nav, el footer,
+  los favicons y el apple-touch-icon, para que la web "se vea" como la app.
+- **Banner social (Open Graph):** `public/og.png` (1200×630) se genera con
+  `npm run generate:og` (`scripts/generate-og.mjs` + `@resvg/resvg-js`), usando la marca + branding.
+  Edítalo ahí y vuelve a correr el script. Se referencia en `og:image` / `twitter:image`.
+- **Meta + datos estructurados:** `Base.astro` emite title/description por idioma, canonical,
+  `hreflang` ES/EN + `x-default`, Open Graph, Twitter Card y JSON-LD `MobileApplication`
+  (app gratuita, Android). `robots.txt` y `sitemap-index.xml` incluidos; `site.webmanifest` para PWA.
+
 ## Notas
 
 - Cero JavaScript de framework: Astro envía HTML estático. El único JS es un micro-script de
   "revelado al hacer scroll" (degrada bien sin JS) y el menú móvil usa `<details>` (sin JS).
 - i18n: ES por defecto en `/`, EN en `/en`. El selector de idioma mantiene la sección actual.
-- Pendiente opcional: una imagen Open Graph (`public/og.png`, 1200×630) para vista previa al
-  compartir; cuando la tengas, añádela en `Base.astro`.
+- Antes de desplegar: pon tu dominio real en `astro.config.mjs` (`site`) y en `public/robots.txt`.
