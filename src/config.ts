@@ -9,4 +9,5 @@ export const SITE = {
   downloadUrl: 'https://play.google.com/store/apps/details?id=com.gepres.nankamay',
   androidPackage: 'com.gepres.nankamay',
   email: 'luislara.dev@gmail.com',
+  website: 'https://genaropretill.com',
 } as const;

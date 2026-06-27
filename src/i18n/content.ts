@@ -92,7 +92,7 @@ const es = {
     note: 'Android · Gratis · Sin anuncios',
   },
   footer: {
-    tagline: '“El camino de la mano” (quechua).',
+    tagline: '“Crear el camino” (quechua).',
     madeIn: 'Hecho en los Andes 🏔️',
     rights: 'Todos los derechos reservados.',
     cols: [
@@ -187,7 +187,7 @@ const en: typeof es = {
     note: 'Android · Free · No ads',
   },
   footer: {
-    tagline: '“The path of the hand” (Quechua).',
+    tagline: '“To create the path” (Quechua).',
     madeIn: 'Made in the Andes 🏔️',
     rights: 'All rights reserved.',
     cols: [

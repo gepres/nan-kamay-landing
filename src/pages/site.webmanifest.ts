@@ -13,7 +13,6 @@ export const GET: APIRoute = () => {
     background_color: '#0D1B12',
     theme_color: '#0D1B12',
     icons: [
-      { src: withBase('/favicon.png'), sizes: '48x48', type: 'image/png' },
       { src: withBase('/icon.png'), sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
     ],
   };
