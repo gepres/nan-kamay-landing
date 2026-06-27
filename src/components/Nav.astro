@@ -1,0 +1,76 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, altLang, base } from '../i18n/utils';
+import { content } from '../i18n/content';
+import { SITE } from '../config';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+const home = base(lang) || '/';
+const alt = altLang(Astro.url);
+
+const links = [
+  { label: t.nav.features, href: '#funciones' },
+  { label: t.nav.how, href: '#como' },
+  { label: t.nav.security, href: '#seguridad' },
+  { label: t.nav.faq, href: '#preguntas' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-line/40 bg-night/80 backdrop-blur-md">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5">
+    <!-- Logo -->
+    <a href={home} class="flex items-center gap-2.5" aria-label={SITE.name}>
+      <svg viewBox="0 0 32 32" class="h-8 w-8" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#1B4332" />
+        <path d="M5 23 L12 11 L17 19 L21 13 L27 23" fill="none" stroke="#F59E0B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="12" cy="11" r="2.3" fill="#22C55E" />
+        <circle cx="21" cy="13" r="2.3" fill="#22C55E" />
+      </svg>
+      <span class="font-display text-lg font-extrabold tracking-tight">Ñan Kamay</span>
+    </a>
+
+    <!-- Links (desktop) -->
+    <div class="hidden items-center gap-7 md:flex">
+      {links.map((l) => (
+        <a href={l.href} class="text-sm font-medium text-ink-soft transition hover:text-ink">{l.label}</a>
+      ))}
+    </div>
+
+    <!-- Acciones -->
+    <div class="flex items-center gap-2">
+      <a
+        href={alt.path}
+        class="rounded-lg border border-line/70 px-2.5 py-1.5 text-xs font-semibold text-ink-soft transition hover:border-accent hover:text-accent"
+        aria-label={alt.lang === 'en' ? 'Switch to English' : 'Cambiar a Español'}
+      >{alt.label}</a>
+
+      <a
+        href={SITE.downloadUrl}
+        target="_blank"
+        rel="noopener"
+        class="hidden items-center gap-1.5 rounded-lg bg-accent px-3.5 py-2 text-sm font-bold text-night transition hover:brightness-110 sm:inline-flex"
+      >
+        <Icon name="lucide:download" class="h-4 w-4" />
+        {t.nav.download}
+      </a>
+
+      <!-- Menú móvil (sin JS, vía <details>) -->
+      <details class="group relative md:hidden">
+        <summary class="flex h-9 w-9 cursor-pointer list-none items-center justify-center rounded-lg border border-line/70 text-ink [&::-webkit-details-marker]:hidden">
+          <Icon name="lucide:menu" class="h-5 w-5 group-open:hidden" />
+          <Icon name="lucide:x" class="hidden h-5 w-5 group-open:block" />
+        </summary>
+        <div class="absolute right-0 mt-2 w-52 rounded-xl border border-line/70 bg-card p-2 shadow-xl shadow-black/40">
+          {links.map((l) => (
+            <a href={l.href} class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-elevated hover:text-ink">{l.label}</a>
+          ))}
+          <a href={SITE.downloadUrl} target="_blank" rel="noopener" class="mt-1 flex items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2.5 text-sm font-bold text-night">
+            <Icon name="lucide:download" class="h-4 w-4" />
+            {t.nav.download}
+          </a>
+        </div>
+      </details>
+    </div>
+  </nav>
+</header>

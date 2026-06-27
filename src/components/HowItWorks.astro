@@ -1,0 +1,26 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+import { content } from '../i18n/content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+---
+
+<section id="como" class="scroll-mt-20 border-y border-line/40 bg-card/20 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.how.heading}</h2>
+      <p class="mt-3 text-lg text-ink-soft">{t.how.subheading}</p>
+    </div>
+
+    <ol class="reveal mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {t.how.steps.map((s, i) => (
+        <li class="relative rounded-2xl border border-line/60 bg-night/60 p-6">
+          <span class="font-display text-5xl font-extrabold text-accent/25">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-2 font-display text-lg font-bold">{s.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-soft">{s.desc}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Marco de teléfono con pantalla intercambiable.
+ *  - Si pasas `src`, muestra esa imagen (tu captura/foto real).
+ *  - Si no, dibuja una pantalla de muestra (placeholder) con el branding.
+ * Para usar capturas reales: déjalas en `public/screens/` y pasa
+ * `src="/screens/record.png"`. Ver README.
+ */
+interface Props {
+  src?: string;
+  alt?: string;
+  label?: string;
+  icon?: string;
+  class?: string;
+}
+const { src, alt = '', label = '', icon = 'lucide:navigation', class: cls = '' } = Astro.props;
+---
+
+<div class={`relative mx-auto w-[260px] max-w-full ${cls}`}>
+  <!-- Marco -->
+  <div class="relative rounded-[2.4rem] border border-line/80 bg-[#0a140e] p-2.5 shadow-2xl shadow-black/50 ring-1 ring-white/5">
+    <!-- Notch -->
+    <div class="absolute left-1/2 top-2.5 z-10 h-5 w-28 -translate-x-1/2 rounded-b-2xl bg-[#0a140e]"></div>
+
+    <div class="relative aspect-[9/19] overflow-hidden rounded-[1.9rem] bg-night">
+      {src ? (
+        <img src={src} alt={alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+      ) : (
+        <div class="flex h-full w-full flex-col">
+          <!-- Status bar -->
+          <div class="flex items-center justify-between px-5 pt-4 text-[10px] text-ink-soft">
+            <span>9:41</span>
+            <span class="flex items-center gap-1">
+              <Icon name="lucide:signal" class="h-3 w-3" />
+              <Icon name="lucide:wifi-off" class="h-3 w-3" />
+              <Icon name="lucide:battery-medium" class="h-3.5 w-3.5" />
+            </span>
+          </div>
+
+          <!-- "Mapa" con ruta -->
+          <div class="relative mt-2 flex-1 overflow-hidden"
+               style="background-image: linear-gradient(rgba(45,106,79,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(45,106,79,.18) 1px, transparent 1px); background-size: 26px 26px;">
+            <svg viewBox="0 0 200 320" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <path d="M30 290 C 60 250, 40 200, 90 180 S 150 120, 130 80 S 160 40, 175 25"
+                    fill="none" stroke="#F59E0B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" />
+              <circle cx="30" cy="290" r="6" fill="#22C55E" stroke="#0D1B12" stroke-width="2" />
+              <circle cx="90" cy="180" r="4.5" fill="#F59E0B" stroke="#0D1B12" stroke-width="2" />
+              <circle cx="130" cy="80" r="4.5" fill="#F59E0B" stroke="#0D1B12" stroke-width="2" />
+              <circle cx="175" cy="25" r="6" fill="#EF4444" stroke="#0D1B12" stroke-width="2" />
+            </svg>
+            <!-- Punto de ubicación -->
+            <span class="absolute left-[14%] bottom-[9%] block h-3 w-3 rounded-full bg-accent ring-4 ring-accent/30"></span>
+          </div>
+
+          <!-- Tarjeta inferior -->
+          <div class="m-2.5 rounded-2xl border border-line/70 bg-card/95 p-3">
+            <div class="flex items-center gap-2">
+              <span class="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-night">
+                <Icon name={icon} class="h-4 w-4" />
+              </span>
+              <span class="text-xs font-semibold text-ink">{label}</span>
+            </div>
+            <div class="mt-2.5 flex justify-between">
+              <div><div class="text-sm font-bold text-ink">8.4 km</div><div class="text-[9px] text-ink-muted">Distancia</div></div>
+              <div><div class="text-sm font-bold text-ink">+612 m</div><div class="text-[9px] text-ink-muted">Desnivel</div></div>
+              <div><div class="text-sm font-bold text-ink">2:51</div><div class="text-[9px] text-ink-muted">Tiempo</div></div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</div>

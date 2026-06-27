@@ -1,0 +1,27 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '../i18n/utils';
+import { content } from '../i18n/content';
+import { SITE } from '../config';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+---
+
+<section id="descargar" class="scroll-mt-20 px-5 py-20 sm:py-28">
+  <div class="reveal relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-accent/30 bg-gradient-to-br from-card to-night p-10 text-center sm:p-16">
+    <div aria-hidden="true" class="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl"></div>
+
+    <h2 class="relative font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.finalCta.title}</h2>
+    <p class="relative mx-auto mt-4 max-w-xl text-lg text-ink-soft">{t.finalCta.subtitle}</p>
+
+    <div class="relative mt-8 flex justify-center">
+      <a href={SITE.downloadUrl} target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 rounded-xl bg-accent px-7 py-4 text-base font-bold text-night shadow-lg shadow-accent/25 transition hover:brightness-110">
+        <Icon name="lucide:download" class="h-5 w-5" />
+        {t.finalCta.button}
+      </a>
+    </div>
+    <p class="relative mt-4 text-sm text-ink-muted">{t.finalCta.note}</p>
+  </div>
+</section>

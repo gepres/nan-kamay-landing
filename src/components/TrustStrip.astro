@@ -1,0 +1,20 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '../i18n/utils';
+import { content } from '../i18n/content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+const icons = ['lucide:gift', 'lucide:wifi-off', 'lucide:ban', 'lucide:globe'];
+---
+
+<section class="border-y border-line/40 bg-card/30">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-5 py-5">
+    {t.trust.map((item, i) => (
+      <span class="flex items-center gap-2 text-sm font-semibold text-ink-soft">
+        <Icon name={icons[i]} class="h-4 w-4 text-accent" />
+        {item}
+      </span>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,29 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '../i18n/utils';
+import { content } from '../i18n/content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+---
+
+<section id="funciones" class="scroll-mt-20 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.features.heading}</h2>
+      <p class="mt-3 text-lg text-ink-soft">{t.features.subheading}</p>
+    </div>
+
+    <div class="reveal mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {t.features.items.map((f) => (
+        <div class="group rounded-2xl border border-line/60 bg-card/40 p-6 transition hover:-translate-y-1 hover:border-accent/50 hover:bg-card/70">
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent transition group-hover:bg-accent group-hover:text-night">
+            <Icon name={f.icon} class="h-5 w-5" />
+          </span>
+          <h3 class="mt-4 font-display text-base font-bold">{f.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-soft">{f.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

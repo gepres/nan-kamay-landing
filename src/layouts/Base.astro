@@ -1,0 +1,65 @@
+---
+import '@fontsource-variable/sora';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { SITE } from '../config';
+import { getLangFromUrl, altLang } from '../i18n/utils';
+import { content } from '../i18n/content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+const alt = altLang(Astro.url);
+const canonical = new URL(Astro.url.pathname, SITE.domain).href;
+const altHref = new URL(alt.path, SITE.domain).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={alt.lang} href={altHref} />
+    <link rel="alternate" hreflang="x-default" href={SITE.domain} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0D1B12" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.meta.title} />
+    <meta name="twitter:description" content={t.meta.description} />
+  </head>
+  <body class="font-sans antialiased">
+    <slot />
+
+    <script>
+      // Revelado progresivo al hacer scroll. Sin JS, todo se muestra igual.
+      const els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && els.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('in'));
+      }
+    </script>
+  </body>
+</html>

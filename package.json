@@ -1,0 +1,22 @@
+{
+  "name": "nan-kamay-landing",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Landing page promocional de Ñan Kamay (app de rutas de trekking offline).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.0",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/sora": "^5.1.0",
+    "@iconify-json/lucide": "^1.2.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "^5.0.0",
+    "astro-icon": "^1.1.5",
+    "tailwindcss": "^4.0.0"
+  }
+}

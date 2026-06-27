@@ -1,0 +1,57 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '../i18n/utils';
+import { content } from '../i18n/content';
+import { SITE } from '../config';
+import PhoneMockup from './PhoneMockup.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = content[lang];
+---
+
+<section class="relative overflow-hidden">
+  <!-- Glows de fondo -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute -top-32 left-1/4 h-96 w-96 rounded-full bg-accent/10 blur-3xl"></div>
+    <div class="absolute top-20 right-0 h-96 w-96 rounded-full bg-easy/10 blur-3xl"></div>
+  </div>
+
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-14 pb-12 md:grid-cols-2 md:pt-20 md:pb-20">
+    <!-- Texto -->
+    <div class="reveal">
+      <span class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-3.5 py-1.5 text-xs font-semibold text-accent">
+        <Icon name="lucide:mountain-snow" class="h-4 w-4" />
+        {t.hero.badge}
+      </span>
+
+      <h1 class="mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+        {t.hero.title}<br /><span class="text-accent">{t.hero.titleAccent}</span>
+      </h1>
+
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-ink-soft">{t.hero.subtitle}</p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a href={SITE.downloadUrl} target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-base font-bold text-night shadow-lg shadow-accent/20 transition hover:brightness-110">
+          <Icon name="lucide:download" class="h-5 w-5" />
+          {t.hero.ctaPrimary}
+        </a>
+        <a href="#funciones"
+           class="inline-flex items-center gap-2 rounded-xl border border-line px-6 py-3.5 text-base font-semibold text-ink transition hover:border-accent hover:text-accent">
+          {t.hero.ctaSecondary}
+          <Icon name="lucide:arrow-down" class="h-4 w-4" />
+        </a>
+      </div>
+
+      <p class="mt-4 flex items-center gap-2 text-sm text-ink-muted">
+        <Icon name="lucide:badge-check" class="h-4 w-4 text-easy" />
+        {t.hero.note}
+      </p>
+    </div>
+
+    <!-- Mockup -->
+    <div class="reveal flex justify-center md:justify-end">
+      <PhoneMockup label={t.screens.shots[0].caption} icon="lucide:navigation" class="rotate-[2deg]" />
+    </div>
+  </div>
+</section>
