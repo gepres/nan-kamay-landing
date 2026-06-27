@@ -1,8 +1,9 @@
 ---
-// Página 404 + fallback de "seguir en vivo" para quien NO tiene la app.
-// En Android/iOS con la app instalada, el App Link/Universal Link abre la app
-// directo y esta página nunca se ve. Solo aparece cuando el enlace cayó al
-// navegador (app no instalada o aún sin verificar). El token se lee en cliente.
+// 404 + VISOR WEB EN VIVO (PR3) para quien NO tiene la app.
+// En Android/iOS con la app instalada y verificada, el App Link abre la app
+// directo y esta página nunca se ve. En el navegador (sin app), `/seguir/<token>`
+// cae al 404.html y aquí mostramos el mapa en vivo leyendo el RPC
+// nk_get_live_session(token) con la publishable key (anon). El token va en la URL.
 import { withBase } from '../i18n/utils';
 import { SITE } from '../config';
 const logo = withBase('/icon.png');
@@ -15,74 +16,186 @@ const home = withBase('/');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>Ñan Kamay</title>
+    <title>Ñan Kamay — Seguimiento en vivo</title>
     <meta name="theme-color" content="#0D1B12" />
     <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
     <style>
-      :root { --night:#0d1b12; --line:#2d6a4f; --accent:#f59e0b; --ink:#fff; --soft:#a7c4b5; --muted:#6b8f7b; }
+      :root { --night:#0d1b12; --card:#1b4332; --line:#2d6a4f; --accent:#f59e0b; --ink:#fff; --soft:#a7c4b5; --muted:#6b8f7b; }
       * { box-sizing: border-box; }
-      body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
-             background:var(--night); color:var(--ink);
+      html, body { height: 100%; }
+      body { margin:0; background:var(--night); color:var(--ink);
              font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-      .card { width:100%; max-width:420px; background:rgba(27,67,50,.35); border:1px solid var(--line);
-              border-radius:20px; padding:28px; text-align:center; }
-      .logo { width:64px; height:64px; border-radius:14px; margin:0 auto 16px; display:block; }
-      h1 { font-size:20px; margin:0 0 8px; font-weight:800; }
-      p { color:var(--soft); font-size:14px; line-height:1.5; margin:0 0 8px; }
-      .muted { color:var(--muted); font-size:12px; }
-      .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px;
-             border-radius:12px; font-weight:800; font-size:14px; text-decoration:none; margin-top:12px;
-             border:1px solid transparent; cursor:pointer; }
+      .hidden { display:none !important; }
+      .btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;
+             border-radius:12px; font-weight:800; font-size:14px; text-decoration:none; border:1px solid transparent; }
       .btn-primary { background:var(--accent); color:var(--night); }
       .btn-ghost { background:transparent; border-color:var(--line); color:var(--ink); }
-      .hidden { display:none; }
-      .dot { display:inline-block; width:9px; height:9px; border-radius:50%; background:#22c55e; margin-right:6px; vertical-align:middle; }
+
+      /* ---- Visor ---- */
+      .viewer { min-height:100dvh; display:flex; flex-direction:column; }
+      .vhead { display:flex; align-items:center; gap:11px; padding:13px 16px; border-bottom:1px solid var(--line); }
+      .vhead img { width:36px; height:36px; border-radius:9px; }
+      .vtitle { font-weight:800; font-size:16px; display:flex; align-items:center; gap:7px; line-height:1.1; }
+      .vstatus { color:var(--soft); font-size:12.5px; margin-top:3px; }
+      .dot { width:9px; height:9px; border-radius:50%; background:#22c55e; display:inline-block;
+             animation:pulse 2s infinite; }
+      @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)} 70%{box-shadow:0 0 0 9px rgba(34,197,94,0)} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0)} }
+      #mapwrap { flex:1; min-height:280px; }
+      #map { width:100%; height:100%; background:#0a140e; }
+      .waiting { flex:1; display:flex; align-items:center; justify-content:center; text-align:center;
+                 color:var(--muted); font-size:13px; padding:28px; }
+      .vfoot { padding:13px 16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+      .vmeta { color:var(--soft); font-size:13px; min-height:18px; }
+      .vbtns { display:flex; gap:10px; }
+      .vbtns .btn { flex:1; }
+      .nk-pin { display:block; width:16px; height:16px; border-radius:50%; background:var(--accent);
+                border:3px solid #0d1b12; box-shadow:0 0 0 4px rgba(245,158,11,.30); }
+
+      /* ---- 404 genérico ---- */
+      .wrap404 { min-height:100dvh; display:grid; place-items:center; padding:24px; }
+      .card { width:100%; max-width:420px; background:rgba(27,67,50,.35); border:1px solid var(--line);
+              border-radius:20px; padding:28px; text-align:center; }
+      .card img { width:64px; height:64px; border-radius:14px; margin:0 auto 16px; display:block; }
+      .card h1 { font-size:20px; margin:0 0 8px; font-weight:800; }
+      .card p { color:var(--soft); font-size:14px; line-height:1.5; margin:0 0 14px; }
     </style>
   </head>
   <body>
-    <div class="card">
-      <img class="logo" src={logo} alt="Ñan Kamay" width="64" height="64" />
-
-      <!-- Caso: enlace de seguimiento en vivo, sin app -->
-      <div id="follow" class="hidden">
-        <h1><span class="dot"></span>Seguimiento en vivo</h1>
-        <p>Alguien comparte su ubicación en tiempo real contigo con <strong>Ñan Kamay</strong>.</p>
-        <p class="muted">Para verlo en el mapa necesitas la app (gratis). Ábrela si ya la tienes o instálala.</p>
-        <a id="open" class="btn btn-primary" href="#">Abrir en Ñan Kamay</a>
-        <a id="install" class="btn btn-ghost" href={SITE.downloadUrl} target="_blank" rel="noopener">Instalar la app</a>
+    <!-- VISOR EN VIVO (se muestra si la URL es /seguir/<token>) -->
+    <div id="follow" class="viewer hidden">
+      <div class="vhead">
+        <img src={logo} alt="" width="36" height="36" />
+        <div>
+          <div class="vtitle"><span class="dot"></span><span id="owner">Seguimiento en vivo</span></div>
+          <div class="vstatus" id="status">Conectando…</div>
+        </div>
       </div>
+      <div id="mapwrap" class="hidden"><div id="map"></div></div>
+      <div id="waiting" class="waiting">Esperando la primera posición…</div>
+      <div class="vfoot">
+        <div class="vmeta" id="meta"></div>
+        <div class="vbtns">
+          <a id="open" class="btn btn-primary" href="#">Abrir en Ñan Kamay</a>
+          <a id="install" class="btn btn-ghost" href={SITE.downloadUrl} target="_blank" rel="noopener">Instalar la app</a>
+        </div>
+      </div>
+    </div>
 
-      <!-- 404 genérico -->
-      <div id="generic" class="hidden">
+    <!-- 404 genérico -->
+    <div id="generic" class="wrap404 hidden">
+      <div class="card">
+        <img src={logo} alt="Ñan Kamay" width="64" height="64" />
         <h1>Página no encontrada</h1>
         <p>Este enlace no existe o ya expiró.</p>
         <a class="btn btn-primary" href={home}>Ir al inicio</a>
       </div>
     </div>
 
-    <script is:inline>
+    <script is:inline define:vars={{ SUPABASE_URL: SITE.supabaseUrl, SUPABASE_ANON_KEY: SITE.supabaseAnonKey }}>
       (function () {
         var path = location.pathname.replace(/\/+$/, '');
         var m = path.match(/\/seguir\/([^\/]+)$/);
         var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        if (m && UUID.test(m[1])) {
-          var token = m[1];
-          var openEl = document.getElementById('open');
-          var playUrl = document.getElementById('install').getAttribute('href');
-          var href;
-          if (/Android/i.test(navigator.userAgent)) {
-            // Android: intent con paquete + fallback a la tienda si no está instalada.
-            href = 'intent://nankamay.trek-peru.com/seguir/' + token +
-                   '#Intent;scheme=https;package=com.gepres.nankamay;S.browser_fallback_url=' +
-                   encodeURIComponent(playUrl) + ';end';
-          } else {
-            href = 'nan-kamay://seguir/' + token;
-          }
-          openEl.setAttribute('href', href);
-          document.getElementById('follow').classList.remove('hidden');
-        } else {
+
+        if (!(m && UUID.test(m[1]))) {
           document.getElementById('generic').classList.remove('hidden');
+          return;
         }
+        var token = m[1];
+        document.getElementById('follow').classList.remove('hidden');
+
+        // "Abrir en la app" (por si tiene la app pero cayó al navegador)
+        var playUrl = document.getElementById('install').getAttribute('href');
+        document.getElementById('open').setAttribute('href',
+          /Android/i.test(navigator.userAgent)
+            ? 'intent://nankamay.trek-peru.com/seguir/' + token + '#Intent;scheme=https;package=com.gepres.nankamay;S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end'
+            : 'nan-kamay://seguir/' + token);
+
+        var statusEl = document.getElementById('status');
+        var metaEl = document.getElementById('meta');
+        var ownerEl = document.getElementById('owner');
+        var map = null, marker = null, centered = false, lastAt = null, ended = false, timer = null;
+
+        function setStatus(t) { statusEl.textContent = t; }
+        function fmtAgo(d) {
+          if (!d) return '';
+          var s = Math.max(0, Math.floor((Date.now() - d.getTime()) / 1000));
+          if (s < 60) return 'hace ' + s + ' s';
+          var mn = Math.floor(s / 60);
+          if (mn < 60) return 'hace ' + mn + ' min';
+          return 'hace ' + Math.floor(mn / 60) + ' h';
+        }
+        function fmtDist(mts) {
+          if (mts == null) return '—';
+          return mts >= 1000 ? (mts / 1000).toFixed(2) + ' km' : Math.round(mts) + ' m';
+        }
+        function loadLeaflet() {
+          return new Promise(function (resolve, reject) {
+            var css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+            document.head.appendChild(css);
+            var js = document.createElement('script');
+            js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            js.onload = resolve; js.onerror = reject;
+            document.head.appendChild(js);
+          });
+        }
+        function ensureMap(lat, lon) {
+          if (map) return;
+          map = L.map('map', { zoomControl: true }).setView([lat, lon], 15);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19, attribution: '© OpenStreetMap'
+          }).addTo(map);
+          var icon = L.divIcon({ className: 'nk-pin-wrap', html: '<span class="nk-pin"></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+          marker = L.marker([lat, lon], { icon: icon }).addTo(map);
+          setTimeout(function () { map.invalidateSize(); }, 150);
+        }
+        function update(s) {
+          var who = (s.owner_name || '').trim() || 'Tu contacto';
+          ownerEl.textContent = who;
+          ended = s.status === 'ended';
+          lastAt = s.last_at ? new Date(s.last_at) : null;
+          var hasPos = s.last_lat != null && s.last_lon != null;
+          if (hasPos) {
+            document.getElementById('waiting').classList.add('hidden');
+            document.getElementById('mapwrap').classList.remove('hidden');
+            ensureMap(s.last_lat, s.last_lon);
+            marker.setLatLng([s.last_lat, s.last_lon]);
+            if (!centered) { map.setView([s.last_lat, s.last_lon], 15); centered = true; }
+            else { map.panTo([s.last_lat, s.last_lon]); }
+            map.invalidateSize();
+          }
+          var acc = s.last_accuracy != null ? ' · ±' + Math.round(s.last_accuracy) + ' m' : '';
+          metaEl.textContent = 'Distancia: ' + fmtDist(s.distance_meters) + acc;
+          setStatus(ended ? (who + ' finalizó') : ('Siguiendo a ' + who + ' · ' + fmtAgo(lastAt)));
+        }
+        async function fetchSession() {
+          var res = await fetch(SUPABASE_URL + '/rest/v1/rpc/nk_get_live_session', {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ p_token: token })
+          });
+          if (!res.ok) throw new Error('http ' + res.status);
+          var rows = await res.json();
+          return Array.isArray(rows) ? rows[0] : rows;
+        }
+        async function poll() {
+          try {
+            var s = await fetchSession();
+            if (!s) { setStatus('Enlace no disponible o expiró'); return; }
+            update(s);
+            if (ended && timer) { clearInterval(timer); timer = null; }
+          } catch (e) {
+            setStatus('Sin conexión. Reintentando…');
+          }
+        }
+        setStatus('Conectando…');
+        loadLeaflet().then(function () {
+          poll();
+          timer = setInterval(poll, 10000);
+          setInterval(function () { if (!ended && lastAt) setStatus('Siguiendo a ' + ownerEl.textContent + ' · ' + fmtAgo(lastAt)); }, 1000);
+        }).catch(function () { setStatus('No se pudo cargar el mapa.'); });
       })();
     </script>
   </body>

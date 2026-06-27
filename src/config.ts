@@ -10,4 +10,9 @@ export const SITE = {
   androidPackage: 'com.gepres.nankamay',
   email: 'luislara.dev@gmail.com',
   website: 'https://genaropretill.com',
+  // Supabase para el visor en vivo (PR3). La "publishable key" (anon) es PÚBLICA
+  // por diseño — la protege RLS y la app ya la trae en su bundle; solo permite
+  // llamar al RPC nk_get_live_session(token) por token exacto.
+  supabaseUrl: 'https://xyemkrcqpbqpaujifjpp.supabase.co',
+  supabaseAnonKey: 'sb_publishable_oIMqmW52d9QCOw3GaVs66g_3zZo66Si',
 } as const;
