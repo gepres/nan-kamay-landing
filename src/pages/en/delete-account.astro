@@ -1,0 +1,100 @@
+---
+// "Delete account and data" (EN) — required by Google Play Data Safety.
+import { withBase } from '../../i18n/utils';
+import { SITE } from '../../config';
+const logo = withBase('/icon.png');
+const home = withBase('/en');
+const updated = 'June 28, 2026';
+const subject = encodeURIComponent('Delete my Ñan Kamay account');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Delete account and data — Ñan Kamay</title>
+    <meta name="description" content="How to request deletion of your Ñan Kamay account and associated data." />
+    <meta name="theme-color" content="#0D1B12" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <link rel="alternate" hreflang="es" href={withBase('/eliminar-cuenta')} />
+    <style>
+      :root { --night:#0d1b12; --card:#1b4332; --line:#2d6a4f; --accent:#f59e0b; --ink:#fff; --soft:#cfe0d7; --muted:#8fae9e; }
+      * { box-sizing:border-box; }
+      body { margin:0; background:var(--night); color:var(--ink);
+             font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+      .wrap { max-width:760px; margin:0 auto; padding:32px 20px 64px; }
+      header { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+      header img { width:40px; height:40px; border-radius:10px; }
+      header a { color:var(--ink); text-decoration:none; font-weight:800; font-size:18px; }
+      h1 { font-size:26px; margin:18px 0 4px; }
+      .upd { color:var(--muted); font-size:13px; margin-bottom:8px; }
+      h2 { font-size:19px; margin:28px 0 8px; }
+      p, li { color:var(--soft); font-size:15px; }
+      ul, ol { padding-left:20px; }
+      li { margin:5px 0; }
+      a { color:var(--accent); }
+      strong { color:#fff; }
+      .cta { display:inline-block; margin:10px 0 4px; background:var(--accent); color:var(--night);
+             font-weight:800; text-decoration:none; padding:12px 18px; border-radius:12px; }
+      .note { background:rgba(27,67,50,.4); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:16px 0; }
+      .back { display:inline-block; margin-top:28px; color:var(--accent); text-decoration:none; font-weight:700; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <img src={logo} alt="Ñan Kamay" width="40" height="40" />
+        <a href={home}>Ñan Kamay</a>
+      </header>
+
+      <h1>Delete your account and data</h1>
+      <p class="upd">Last updated: {updated}</p>
+
+      <p>
+        This page explains how to request deletion of your <strong>Ñan Kamay</strong> account
+        (developed by Genaro Pretill) and associated data.
+      </p>
+
+      <h2>How to request deletion</h2>
+      <ol>
+        <li>Email <a href={`mailto:${SITE.email}?subject=${subject}`}>{SITE.email}</a>
+          <strong>from your account's email address</strong>.</li>
+        <li>Subject: <strong>"Delete my Ñan Kamay account"</strong>.</li>
+        <li>We will process the request and delete your account and data within <strong>up to 30
+          days</strong>; backups are purged within a maximum of <strong>90 days</strong>.</li>
+      </ol>
+
+      <a class="cta" href={`mailto:${SITE.email}?subject=${subject}`}>Request deletion by email</a>
+
+      <h2>What gets deleted</h2>
+      <ul>
+        <li>Your account and email address.</li>
+        <li>Your synced routes (GPS track, waypoints) and their media (photos, videos, voice notes).</li>
+        <li>Your live tracking sessions.</li>
+        <li>Analytics events associated with your account.</li>
+      </ul>
+
+      <h2>What is retained (and for how long)</h2>
+      <ul>
+        <li><strong>Backups:</strong> removed within a maximum of 90 days after the request.</li>
+        <li><strong>Anonymous aggregate analytics:</strong> data with no personal information or location,
+          which cannot identify you, may be kept for product statistics.</li>
+        <li>Any data we are legally required to retain for a set period.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Only want to delete some data?</strong> You don't need to delete your account: in the app
+        you can delete individual routes (local and cloud) and turn off analytics in Profile → settings.
+        Uninstalling the app also removes all data stored on your device.
+      </div>
+
+      <p>
+        Questions: <a href={SITE.website} target="_blank" rel="noopener">genaropretill.com</a>
+        · <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <a class="back" href={home}>← Back to home</a>
+    </div>
+  </body>
+</html>
