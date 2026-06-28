@@ -8,6 +8,8 @@ const t = content[lang];
 const home = withBase(base(lang) ? base(lang) + '/' : '/');
 const logo = withBase('/icon.png');
 const year = 2026;
+const privacyHref = withBase(lang === 'en' ? '/en/privacy' : '/privacidad');
+const privacyLabel = lang === 'en' ? 'Privacy' : 'Privacidad';
 ---
 
 <footer class="border-t border-line/40 bg-card/20">
@@ -36,7 +38,10 @@ const year = 2026;
   <div class="border-t border-line/40">
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-5 py-5 text-sm text-ink-muted sm:flex-row">
       <span>© {year} {SITE.name}. {t.footer.rights}</span>
-      <a href={SITE.website} target="_blank" rel="noopener" class="transition hover:text-accent">genaropretill.com</a>
+      <div class="flex items-center gap-4">
+        <a href={privacyHref} class="transition hover:text-accent">{privacyLabel}</a>
+        <a href={SITE.website} target="_blank" rel="noopener" class="transition hover:text-accent">genaropretill.com</a>
+      </div>
     </div>
   </div>
 </footer>
