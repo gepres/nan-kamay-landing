@@ -8,7 +8,7 @@ export const SITE = {
   /** Ficha de Google Play (com.gepres.nankamay). Hoy en alpha cerrada. */
   downloadUrl: 'https://play.google.com/store/apps/details?id=com.gepres.nankamay',
   androidPackage: 'com.gepres.nankamay',
-  email: 'luislara.dev@gmail.com',
+  email: 'genaropretill@gmail.com',
   website: 'https://genaropretill.com',
   // Supabase para el visor en vivo (PR3). La "publishable key" (anon) es PÚBLICA
   // por diseño — la protege RLS y la app ya la trae en su bundle; solo permite
