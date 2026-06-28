@@ -52,8 +52,9 @@ const home = withBase('/');
       .vdiag { color:var(--muted); font-size:11.5px; }
       .vbtns { display:flex; gap:10px; }
       .vbtns .btn { flex:1; }
-      .nk-pin { display:block; width:16px; height:16px; border-radius:50%; background:var(--accent);
-                border:3px solid #0d1b12; box-shadow:0 0 0 4px rgba(245,158,11,.30); }
+      /* El marcador se dibuja con L.circleMarker (SVG por JS), NO con CSS: una
+         clase aquí la "scopea" Astro con [data-astro-cid] y el nodo que inyecta
+         Leaflet en runtime no la lleva → quedaría invisible. */
       .badge { position:fixed; top:8px; right:10px; z-index:900; font-size:10px; color:var(--muted);
                background:rgba(13,27,18,.6); border:1px solid var(--line); border-radius:6px; padding:2px 6px; }
 
@@ -67,7 +68,7 @@ const home = withBase('/');
     </style>
   </head>
   <body>
-    <span class="badge" id="ver">visor v3</span>
+    <span class="badge" id="ver">visor v4</span>
 
     <!-- VISOR EN VIVO (se muestra si la URL es /seguir/<token>) -->
     <div id="follow" class="viewer hidden">
@@ -127,7 +128,7 @@ const home = withBase('/');
         var ownerEl = document.getElementById('owner');
         var diagEl = document.getElementById('diag');
         var overlayEl = document.getElementById('overlay');
-        var map = null, marker = null, centered = false, lastAt = null, ended = false, timer = null, mapReady = false;
+        var map = null, marker = null, accCircle = null, centered = false, lastAt = null, ended = false, timer = null, mapReady = false;
 
         function setStatus(t) { statusEl.textContent = t; }
         function setDiag(t) { diagEl.textContent = t; }
@@ -172,14 +173,20 @@ const home = withBase('/');
           lastAt = s.last_at ? new Date(s.last_at) : null;
           var hasPos = s.last_lat != null && s.last_lon != null;
           if (hasPos && mapReady) {
+            var ll = [s.last_lat, s.last_lon];
+            // Marcador SVG (sin CSS/clase → inmune al scoping de Astro).
             if (!marker) {
-              var icon = L.divIcon({ className: 'nk-pin-wrap', html: '<span class="nk-pin"></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
-              marker = L.marker([s.last_lat, s.last_lon], { icon: icon }).addTo(map);
+              marker = L.circleMarker(ll, { radius: 9, color: '#0d1b12', weight: 3, fillColor: '#f59e0b', fillOpacity: 1 }).addTo(map);
             } else {
-              marker.setLatLng([s.last_lat, s.last_lon]);
+              marker.setLatLng(ll);
             }
-            if (!centered) { map.setView([s.last_lat, s.last_lon], 15); centered = true; }
-            else { map.panTo([s.last_lat, s.last_lon]); }
+            // Círculo de precisión (si el emisor lo envía).
+            if (s.last_accuracy != null) {
+              if (!accCircle) accCircle = L.circle(ll, { radius: s.last_accuracy, color: '#f59e0b', weight: 1, fillColor: '#f59e0b', fillOpacity: 0.12 }).addTo(map);
+              else { accCircle.setLatLng(ll); accCircle.setRadius(s.last_accuracy); }
+            }
+            if (!centered) { map.setView(ll, 15); centered = true; }
+            else { map.panTo(ll); }
             map.invalidateSize();
             showOverlay(null);
           } else if (!hasPos) {
