@@ -5,7 +5,7 @@ import PhoneMockup from './PhoneMockup.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = content[lang];
-const icons = ['lucide:navigation', 'lucide:map', 'lucide:flag', 'lucide:git-branch'];
+const icons = ['lucide:navigation', 'lucide:map', 'lucide:share-2', 'lucide:radio'];
 ---
 
 <section class="scroll-mt-20 border-y border-line/40 bg-card/20 py-20 sm:py-28">
@@ -18,7 +18,7 @@ const icons = ['lucide:navigation', 'lucide:map', 'lucide:flag', 'lucide:git-bra
     <div class="reveal mt-14 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
       {t.screens.shots.map((s, i) => (
         <figure class="shrink-0 snap-center">
-          <PhoneMockup label={s.caption} icon={icons[i]} />
+          <PhoneMockup src={s.src} alt={s.alt} label={s.caption} icon={icons[i]} />
           <figcaption class="mt-4 text-center text-sm font-medium text-ink-soft">{s.caption}</figcaption>
         </figure>
       ))}

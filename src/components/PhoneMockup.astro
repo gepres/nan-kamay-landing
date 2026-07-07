@@ -23,8 +23,10 @@ const imgSrc = src ? withBase(src) : undefined;
 <div class={`relative mx-auto w-[260px] max-w-full ${cls}`}>
   <!-- Marco -->
   <div class="relative rounded-[2.4rem] border border-line/80 bg-[#0a140e] p-2.5 shadow-2xl shadow-black/50 ring-1 ring-white/5">
-    <!-- Notch -->
-    <div class="absolute left-1/2 top-2.5 z-10 h-5 w-28 -translate-x-1/2 rounded-b-2xl bg-[#0a140e]"></div>
+    <!-- Notch (solo en la pantalla de muestra; una captura real ya trae su barra de estado) -->
+    {!imgSrc && (
+      <div class="absolute left-1/2 top-2.5 z-10 h-5 w-28 -translate-x-1/2 rounded-b-2xl bg-[#0a140e]"></div>
+    )}
 
     <div class="relative aspect-[9/19] overflow-hidden rounded-[1.9rem] bg-night">
       {imgSrc ? (

@@ -34,7 +34,7 @@ const mockMeta: Record<string, { icon: string; id?: string }> = {
             </ul>
           </div>
           <div class={`flex justify-center ${flip ? 'md:order-1 md:justify-start' : 'md:justify-end'}`}>
-            <PhoneMockup label={h.eyebrow} icon={meta.icon} class={flip ? '-rotate-[2deg]' : 'rotate-[2deg]'} />
+            <PhoneMockup src={h.src} alt={h.alt} label={h.eyebrow} icon={meta.icon} class={flip ? '-rotate-[2deg]' : 'rotate-[2deg]'} />
           </div>
         </div>
       );

@@ -56,6 +56,8 @@ const es = {
       desc: 'Descarga los mapas de tu zona y graba con el GPS aunque no haya datos ni cobertura. Todo se guarda en tu teléfono primero.',
       bullets: ['Mapas vectoriales descargables (OpenStreetMap)', 'GPS sin necesidad de datos móviles', 'Tus rutas viven en tu dispositivo'],
       mock: 'offline',
+      src: '/screens/mapa-offline.jpeg',
+      alt: 'Mapa offline de Ñan Kamay mostrando Cusco con el aviso “Sin señal” y una ruta ya sincronizada.',
     },
     {
       eyebrow: 'Seguridad',
@@ -63,16 +65,18 @@ const es = {
       desc: 'Comparte un check-in o lanza un SOS por SMS aunque no tengas internet, y deja que te sigan en vivo con un simple enlace.',
       bullets: ['Check-in y SOS por SMS (funcionan offline)', 'Enlace “sígueme” en vivo', 'Contactos de confianza, solo en tu dispositivo'],
       mock: 'safety',
+      src: '/screens/seguridad.jpeg',
+      alt: 'Pantalla de seguridad de Ñan Kamay con los botones “Estoy bien” y “S.O.S.” y la lista de contactos de confianza.',
     },
   ],
   screens: {
     heading: 'Hecha para el campo',
     subheading: 'Una interfaz clara, pensada para usar con guantes y bajo el sol.',
     shots: [
-      { caption: 'Grabación en vivo' },
-      { caption: 'Mapa offline' },
-      { caption: 'Resumen de ruta' },
-      { caption: 'Planificador' },
+      { caption: 'Grabación en vivo', src: '/screens/grabando-mapa.jpeg', alt: 'Ñan Kamay grabando una ruta en vivo: traza en el mapa con distancia, tiempo y velocidad.' },
+      { caption: 'Mapa offline', src: '/screens/mapa-offline.jpeg', alt: 'Mapa offline de Ñan Kamay funcionando sin señal.' },
+      { caption: 'Comparte en vivo', src: '/screens/compartir-ruta.jpeg', alt: 'Hoja para compartir tu ubicación en vivo por WhatsApp, SMS o enlace.' },
+      { caption: 'Sigue a un contacto', src: '/screens/seguir-contacto.jpeg', alt: 'Pantalla para seguir en vivo la ubicación de un contacto pegando su enlace.' },
     ],
   },
   faq: {
@@ -151,6 +155,8 @@ const en: typeof es = {
       desc: 'Download your area’s maps and track with GPS even with no data or coverage. Everything is saved on your phone first.',
       bullets: ['Downloadable vector maps (OpenStreetMap)', 'GPS with no mobile data needed', 'Your routes live on your device'],
       mock: 'offline',
+      src: '/screens/mapa-offline.jpeg',
+      alt: 'Ñan Kamay offline map showing Cusco with a “No signal” notice and a route already synced.',
     },
     {
       eyebrow: 'Safety',
@@ -158,16 +164,18 @@ const en: typeof es = {
       desc: 'Share a check-in or fire an SOS over SMS even with no internet, and let people follow you live with a simple link.',
       bullets: ['Check-in and SOS over SMS (work offline)', 'Live “follow me” link', 'Trusted contacts, only on your device'],
       mock: 'safety',
+      src: '/screens/seguridad.jpeg',
+      alt: 'Ñan Kamay safety screen with “I’m OK” and “S.O.S.” buttons and the trusted-contacts list.',
     },
   ],
   screens: {
     heading: 'Built for the field',
     subheading: 'A clear interface, made to use with gloves and under the sun.',
     shots: [
-      { caption: 'Live tracking' },
-      { caption: 'Offline map' },
-      { caption: 'Route summary' },
-      { caption: 'Planner' },
+      { caption: 'Live tracking', src: '/screens/grabando-mapa.jpeg', alt: 'Ñan Kamay recording a route live: the track on the map with distance, time and speed.' },
+      { caption: 'Offline map', src: '/screens/mapa-offline.jpeg', alt: 'Ñan Kamay offline map working with no signal.' },
+      { caption: 'Share live', src: '/screens/compartir-ruta.jpeg', alt: 'Sheet to share your live location via WhatsApp, SMS or link.' },
+      { caption: 'Follow a contact', src: '/screens/seguir-contacto.jpeg', alt: 'Screen to follow a contact’s live location by pasting their link.' },
     ],
   },
   faq: {
