@@ -5,7 +5,7 @@ import { withBase } from '../i18n/utils';
 import { SITE } from '../config';
 const logo = withBase('/icon.png');
 const home = withBase('/');
-const updated = '28 de junio de 2026';
+const updated = '16 de agosto de 2026';
 ---
 
 <!doctype html>
@@ -121,6 +121,15 @@ const updated = '28 de junio de 2026';
         Android, versión de la app) y, si la adjuntas, una captura de pantalla.
       </p>
 
+      <h3>Programa de pruebas (beta)</h3>
+      <p>
+        Si te apuntas a la prueba cerrada desde <a href={withBase('/beta')}>nuestra página de beta</a>,
+        guardamos <strong>tu nombre y tu correo</strong> para darte acceso a la prueba en Google Play y
+        avisarte de novedades. No se comparten con nadie y <strong>se eliminan cuando termine el
+        programa de pruebas</strong>, o antes si nos lo pides. Unirte al grupo de testers de Google es
+        un paso aparte, gestionado por Google.
+      </p>
+
       <h2>3. Para qué usamos los datos</h2>
       <ul>
         <li>Grabar, mostrar y exportar tus rutas (GPX/KML/KMZ).</li>
@@ -151,6 +160,8 @@ const updated = '28 de junio de 2026';
         <li><strong>Sesiones de seguimiento en vivo:</strong> caducan automáticamente a las 12 horas.</li>
         <li><strong>Analítica:</strong> eventos anónimos, conservados de forma agregada para análisis de
           producto.</li>
+        <li><strong>Programa de pruebas (beta):</strong> nombre y correo de quienes se apuntan, hasta
+          que termine la beta o nos pidas borrarlos.</li>
       </ul>
 
       <h2>6. Tus derechos y controles</h2>
