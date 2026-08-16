@@ -24,6 +24,12 @@ export const SITE = {
   // Prueba cerrada (página /beta). La Play Developer API solo acepta GRUPOS de
   // Google como lista de testers —nunca correos sueltos—, así que el grupo ES la
   // lista: la landing solo guarda el correo (auditoría) y lleva a unirse + aceptar.
+  /**
+   * Mientras la app esté en prueba cerrada, los CTA de la home (nav, hero y cierre)
+   * llevan a /beta en vez de a `downloadUrl`: la ficha de Play todavía NO es pública
+   * y ese enlace no le sirve a nadie. Pon `false` cuando la app se publique.
+   */
+  betaMode: true,
   testersGroupEmail: `${TESTERS_GROUP}@googlegroups.com`,
   testersGroupUrl: `https://groups.google.com/g/${TESTERS_GROUP}`,
   /** Alta por correo: sirve cuando la web de Groups exige iniciar sesión. */

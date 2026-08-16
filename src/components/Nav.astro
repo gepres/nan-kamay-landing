@@ -16,6 +16,14 @@ const links = [
   { label: t.nav.security, href: '#seguridad' },
   { label: t.nav.faq, href: '#preguntas' },
 ];
+
+// En prueba cerrada el CTA lleva al alta de la beta (interna, sin _blank);
+// publicada, a la ficha de Play. Ver SITE.betaMode.
+const ctaHref = SITE.betaMode ? withBase(base(lang) + '/beta') : SITE.downloadUrl;
+const ctaLabel = SITE.betaMode ? t.beta.nav : t.nav.download;
+const ctaIcon = SITE.betaMode ? 'lucide:flask-conical' : 'lucide:download';
+const ctaTarget = SITE.betaMode ? undefined : '_blank';
+const ctaRel = SITE.betaMode ? undefined : 'noopener';
 ---
 
 <header class="sticky top-0 z-50 border-b border-line/40 bg-night/80 backdrop-blur-md">
@@ -42,13 +50,13 @@ const links = [
       >{alt.label}</a>
 
       <a
-        href={SITE.downloadUrl}
-        target="_blank"
-        rel="noopener"
+        href={ctaHref}
+        target={ctaTarget}
+        rel={ctaRel}
         class="hidden items-center gap-1.5 rounded-lg bg-accent px-3.5 py-2 text-sm font-bold text-night transition hover:brightness-110 sm:inline-flex"
       >
-        <Icon name="lucide:download" class="h-4 w-4" />
-        {t.nav.download}
+        <Icon name={ctaIcon} class="h-4 w-4" />
+        {ctaLabel}
       </a>
 
       <!-- Menú móvil (sin JS, vía <details>) -->
@@ -61,9 +69,9 @@ const links = [
           {links.map((l) => (
             <a href={l.href} class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-elevated hover:text-ink">{l.label}</a>
           ))}
-          <a href={SITE.downloadUrl} target="_blank" rel="noopener" class="mt-1 flex items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2.5 text-sm font-bold text-night">
-            <Icon name="lucide:download" class="h-4 w-4" />
-            {t.nav.download}
+          <a href={ctaHref} target={ctaTarget} rel={ctaRel} class="mt-1 flex items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2.5 text-sm font-bold text-night">
+            <Icon name={ctaIcon} class="h-4 w-4" />
+            {ctaLabel}
           </a>
         </div>
       </details>

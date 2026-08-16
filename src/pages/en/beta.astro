@@ -1,37 +1,36 @@
 ---
-// Alta de testers para la PRUEBA CERRADA de Google Play.
+// Tester sign-up for the Google Play CLOSED TEST (English version of /beta).
 //
-// Por qué esta página existe: la Play Developer API solo acepta GRUPOS de Google
-// como lista de testers (nunca correos sueltos), así que el grupo
-// kamay-testers@googlegroups.com —registrado una vez en Play Console— ES la lista.
-// Aquí solo (1) guardamos el correo para nuestra auditoría de permanencia y
-// (2) llevamos a la persona a unirse al grupo y a aceptar la prueba.
+// Why this page exists: the Play Developer API only accepts Google GROUPS as the
+// tester list (never individual emails), so kamay-testers@googlegroups.com — set
+// once in Play Console — IS the list. Here we only (1) store the email for our own
+// retention audit and (2) walk the person through joining the group and opting in.
 //
-// Sitio estático en GitHub Pages: el POST va del navegador al RPC
-// nk_register_tester con la publishable key, igual que el visor en vivo de
-// 404.astro. La tabla nk_testers está cerrada (sin políticas ni grants); solo esa
-// RPC SECURITY DEFINER escribe, así que la key pública no puede leer los correos.
-import { withBase } from '../i18n/utils';
-import { SITE } from '../config';
+// Static site on GitHub Pages: the POST goes straight from the browser to the
+// nk_register_tester RPC with the publishable key, same as the live viewer in
+// 404.astro. The nk_testers table is closed (no policies, no grants); only that
+// SECURITY DEFINER RPC writes, so the public key cannot read the emails.
+import { withBase } from '../../i18n/utils';
+import { SITE } from '../../config';
 const logo = withBase('/icon.png');
-const home = withBase('/');
-const privacidad = withBase('/privacidad');
+const home = withBase('/en');
+const privacy = withBase('/en/privacy');
 const ogImage = withBase('/og.png');
-const title = 'Sé tester de Ñan Kamay';
+const title = 'Become a Ñan Kamay tester';
 const description =
-  'Apúntate a la prueba cerrada de Ñan Kamay y recibe la app antes que nadie. Grabación GPS de rutas, mapas offline y seguridad en montaña.';
+  'Join the Ñan Kamay closed test and get the app before anyone else. GPS trail recording, offline maps and mountain safety.';
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — Prueba cerrada</title>
+    <title>{title} — Closed test</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0D1B12" />
     <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
-    <link rel="alternate" hreflang="en" href={withBase('/en/beta')} />
+    <link rel="alternate" hreflang="es" href={withBase('/beta')} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -108,115 +107,115 @@ const description =
         <a href={home}>Ñan Kamay</a>
       </header>
 
-      <span class="pill">PRUEBA CERRADA · ANDROID</span>
-      <h1>Sé de los primeros en usar Ñan Kamay</h1>
+      <span class="pill">CLOSED TEST · ANDROID</span>
+      <h1>Be among the first to use Ñan Kamay</h1>
       <p class="lead">
-        Estamos en pruebas cerradas en Google Play. Déjanos tu correo y te damos acceso a la app
-        completa: grabación GPS de rutas, mapas offline, waypoints con fotos y el seguimiento en
-        vivo para que alguien sepa dónde estás en la montaña.
+        We're in closed testing on Google Play. Leave us your email and we'll give you access to the
+        full app: GPS trail recording, offline maps, waypoints with photos and live tracking so
+        someone always knows where you are in the mountains.
       </p>
 
-      <!-- ── Paso 1: alta ─────────────────────────────────────── -->
+      <!-- ── Step 1: sign up ─────────────────────────────────── -->
       <section class="card" id="step-form">
-        <h2>Apúntate</h2>
-        <p class="hint">Es gratis y puedes salirte cuando quieras.</p>
+        <h2>Sign up</h2>
+        <p class="hint">It's free and you can leave whenever you want.</p>
         <form id="form" novalidate>
-          <label for="name">Tu nombre</label>
-          <input id="name" name="name" type="text" autocomplete="name" placeholder="Cómo te llamamos" />
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="What should we call you" />
 
-          <label for="email">Correo de tu cuenta de Google *</label>
+          <label for="email">Your Google account email *</label>
           <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-                 placeholder="tucorreo@gmail.com" required />
+                 placeholder="you@gmail.com" required />
           <p class="hint">
-            Tiene que ser <strong>la cuenta con la que entras a Google Play</strong> en tu teléfono.
-            Si nos das otra, la app no te aparecerá.
+            It must be <strong>the account you use on Google Play</strong> on your phone.
+            With any other one, the app won't show up for you.
           </p>
 
           <div class="warn hidden" id="warn">
-            Ese correo no parece una cuenta de Gmail. Solo funciona si es la cuenta de Google que
-            usas en el Play Store de tu teléfono. Si lo es, continúa.
+            That doesn't look like a Gmail address. It only works if it's the Google account you use
+            in the Play Store on your phone. If it is, go ahead.
           </div>
 
           <label class="check" for="consent">
             <input id="consent" type="checkbox" />
-            <span>Acepto que guarden mi nombre y correo para darme acceso a la prueba y avisarme de
-              novedades. Se borra al terminar la beta — <a href={privacidad}>política de privacidad</a>.</span>
+            <span>I agree to you storing my name and email to give me access to the test and tell me
+              about updates. It's deleted when the beta ends — <a href={privacy}>privacy policy</a>.</span>
           </label>
 
-          <button class="cta" id="submit" type="submit">Quiero ser tester</button>
+          <button class="cta" id="submit" type="submit">I want to be a tester</button>
           <p class="error hidden" id="error" role="alert"></p>
         </form>
       </section>
 
-      <!-- ── Paso 2: qué hacer ahora ──────────────────────────── -->
+      <!-- ── Step 2: what to do now ──────────────────────────── -->
       <section class="card hidden" id="step-done">
-        <h2 id="done-title">¡Listo! Faltan dos pasos</h2>
-        <p class="hint">Los dos son obligatorios: así funciona Google Play, no podemos saltárnoslos.</p>
+        <h2 id="done-title">You're in! Two steps left</h2>
+        <p class="hint">Both are required: that's how Google Play works, we can't skip them.</p>
 
         <ol class="steps">
           <li>
-            <h3>Únete al grupo de testers</h3>
-            <p>Google da el acceso a través de este grupo. Sin estar dentro, la app no te llega.</p>
-            <a class="cta" id="join" href={SITE.testersGroupUrl} target="_blank" rel="noopener">Unirme al grupo</a>
+            <h3>Join the testers group</h3>
+            <p>Google grants access through this group. If you're not in it, the app won't reach you.</p>
+            <a class="cta" id="join" href={SITE.testersGroupUrl} target="_blank" rel="noopener">Join the group</a>
             <p class="hint">
-              ¿Te pide iniciar sesión o no carga? También puedes
-              <a href={SITE.testersJoinMailto}>unirte enviando un correo vacío</a>.
+              Asking you to sign in, or not loading?
+              <a href={SITE.testersJoinMailto}>Join by sending an empty email</a> instead.
             </p>
           </li>
           <li>
-            <h3>Acepta la prueba y descarga</h3>
-            <p>Abre este enlace en el teléfono y toca el botón para convertirte en verificador.</p>
-            <a class="cta" id="optin" href={SITE.playOptInUrl} target="_blank" rel="noopener">Aceptar y descargar</a>
+            <h3>Opt in and download</h3>
+            <p>Open this link on your phone and tap the button to become a tester.</p>
+            <a class="cta" id="optin" href={SITE.playOptInUrl} target="_blank" rel="noopener">Opt in and download</a>
           </li>
         </ol>
 
         <div class="note">
-          ⏱️ Entre que te unes al grupo y que Google Play te reconoce pasan <strong>unos minutos</strong>.
-          Si al abrir el segundo enlace todavía no te deja, espera un rato y vuelve a intentarlo — es normal.
+          ⏱️ It takes <strong>a few minutes</strong> between joining the group and Google Play
+          recognising you. If the second link won't let you in yet, wait a bit and try again — that's normal.
         </div>
 
-        <button class="ghost" id="copy" type="button">Copiar los 2 enlaces</button>
-        <p class="ok hidden" id="copied">Enlaces copiados.</p>
-        <button class="ghost hidden" id="again" type="button">Apuntar otro correo</button>
+        <button class="ghost" id="copy" type="button">Copy both links</button>
+        <p class="ok hidden" id="copied">Links copied.</p>
+        <button class="ghost hidden" id="again" type="button">Sign up another email</button>
       </section>
 
-      <!-- ── Qué esperamos ────────────────────────────────────── -->
+      <!-- ── What we expect ──────────────────────────────────── -->
       <section class="card">
-        <h2>Qué esperamos de ti</h2>
+        <h2>What we expect from you</h2>
         <ul class="plain">
-          <li><strong>Que no la desinstales durante 2 semanas.</strong> Google exige que el grupo de
-            testers se mantenga estable ese tiempo; si te sales, la prueba se atrasa para todos.</li>
-          <li><strong>Que la uses en una salida real</strong> — una caminata, un cerro, lo que hagas
-            normalmente. Es donde aparecen los fallos que importan.</li>
-          <li><strong>Que nos cuentes lo que falle</strong> desde <em>Perfil → Reportar un problema</em>,
-            dentro de la app. Llega directo, con la versión y la pantalla.</li>
+          <li><strong>Don't uninstall it for 2 weeks.</strong> Google requires the tester group to stay
+            stable for that long; if you drop out, the test is delayed for everyone.</li>
+          <li><strong>Use it on a real outing</strong> — a hike, a summit, whatever you normally do.
+            That's where the bugs that matter show up.</li>
+          <li><strong>Tell us what breaks</strong> from <em>Profile → Report a problem</em>, inside the
+            app. It reaches us directly, with the version and the screen.</li>
         </ul>
       </section>
 
-      <h2 style="margin-top:30px">Dudas frecuentes</h2>
+      <h2 style="margin-top:30px">Common questions</h2>
       <details>
-        <summary>Me uní al grupo pero la app no me aparece en Play</summary>
-        <p>Casi siempre son dos cosas: (1) todavía no pasaron los minutos de propagación, o (2) el
-          teléfono está usando otra cuenta de Google. Comprueba en Play Store → tu foto de perfil que
-          la cuenta activa sea la misma que nos diste, y vuelve a abrir el enlace de la prueba.</p>
+        <summary>I joined the group but the app doesn't show up on Play</summary>
+        <p>It's almost always one of two things: (1) the propagation minutes haven't passed yet, or
+          (2) your phone is signed in with a different Google account. Check in Play Store → your
+          profile picture that the active account is the one you gave us, then open the test link again.</p>
       </details>
       <details>
-        <summary>¿Cuesta algo?</summary>
-        <p>No. La app es gratuita y no tiene anuncios ni compras.</p>
+        <summary>Does it cost anything?</summary>
+        <p>No. The app is free, with no ads and no in-app purchases.</p>
       </details>
       <details>
-        <summary>¿Qué hacen con mi correo?</summary>
-        <p>Se guarda solo para darte acceso a la prueba y avisarte de novedades de la beta. No se
-          comparte con nadie y se borra cuando termine. Detalle en la
-          <a href={privacidad}>política de privacidad</a>.</p>
+        <summary>What do you do with my email?</summary>
+        <p>It's stored only to give you access to the test and tell you about beta updates. It isn't
+          shared with anyone and it's deleted when the test ends. Details in the
+          <a href={privacy}>privacy policy</a>.</p>
       </details>
       <details>
-        <summary>¿Cómo me salgo?</summary>
-        <p>Sales del grupo de Google cuando quieras y desinstalas la app. Si prefieres avisarnos,
-          escribe a <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+        <summary>How do I leave?</summary>
+        <p>Leave the Google group whenever you want and uninstall the app. If you'd rather tell us,
+          write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
       </details>
 
-      <a class="back" href={home}>← Volver al inicio</a>
+      <a class="back" href={home}>← Back to home</a>
     </div>
 
     <script
@@ -254,15 +253,15 @@ const description =
 
         function showDone(who, returning) {
           doneTitle.textContent = returning
-            ? (who ? 'Ya estás apuntado, ' + who : 'Ya estás apuntado')
-            : (who ? '¡Listo, ' + who + '! Faltan dos pasos' : '¡Listo! Faltan dos pasos');
+            ? (who ? "You're already signed up, " + who : "You're already signed up")
+            : (who ? "You're in, " + who + '! Two steps left' : "You're in! Two steps left");
           stepForm.classList.add('hidden');
           stepDone.classList.remove('hidden');
           againBtn.classList.remove('hidden');
         }
 
-        // Si ya se apuntó en este navegador, no le pedimos el correo otra vez:
-        // lo que necesita al volver son los dos enlaces.
+        // If they already signed up in this browser, don't ask for the email again:
+        // what they need when coming back are the two links.
         try {
           var saved = localStorage.getItem(STORE_KEY);
           if (saved) showDone(JSON.parse(saved).name, true);
@@ -281,16 +280,16 @@ const description =
         });
 
         copyBtn.addEventListener('click', function () {
-          var text = '1) Únete al grupo de testers: ' + GROUP_URL +
-                     '\n2) Acepta la prueba y descarga: ' + PLAY_URL;
+          var text = '1) Join the testers group: ' + GROUP_URL +
+                     '\n2) Opt in and download: ' + PLAY_URL;
           var done = function () {
             copiedEl.classList.remove('hidden');
             setTimeout(function () { copiedEl.classList.add('hidden'); }, 2500);
           };
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copia los enlaces:', text); });
+            navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copy the links:', text); });
           } else {
-            window.prompt('Copia los enlaces:', text);
+            window.prompt('Copy the links:', text);
           }
         });
 
@@ -301,20 +300,20 @@ const description =
           var name = nameEl.value.trim();
           var email = emailEl.value.trim().toLowerCase();
 
-          if (!EMAIL.test(email)) { fail('Revisa el correo: parece incompleto.'); emailEl.focus(); return; }
-          if (!consentEl.checked) { fail('Marca la casilla para poder darte acceso.'); return; }
+          if (!EMAIL.test(email)) { fail('Check the email: it looks incomplete.'); emailEl.focus(); return; }
+          if (!consentEl.checked) { fail('Tick the box so we can give you access.'); return; }
 
-          // Aviso, no bloqueo: hay cuentas de Google con dominio propio. El error
-          // nº 1 de los testers es dar el correo del trabajo y luego no ver la app.
+          // Warn, don't block: there are Google accounts on custom domains. The #1
+          // mistake is giving a work address and then not seeing the app.
           if (!GOOGLE.test(email) && !warned) {
             warned = true;
             warnEl.classList.remove('hidden');
-            btn.textContent = 'Sí, es mi cuenta de Google — continuar';
+            btn.textContent = 'Yes, that’s my Google account — continue';
             return;
           }
 
           btn.disabled = true;
-          btn.textContent = 'Enviando…';
+          btn.textContent = 'Sending…';
 
           fetch(SUPABASE_URL + '/rest/v1/rpc/nk_register_tester', {
             method: 'POST',
@@ -323,15 +322,15 @@ const description =
               'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ p_email: email, p_name: name || null, p_source: 'landing' }),
+            body: JSON.stringify({ p_email: email, p_name: name || null, p_source: 'landing-en' }),
           })
             .then(function (res) {
               if (res.ok) return null;
               return res.json().catch(function () { return null; }).then(function (body) {
                 var code = body && body.message ? body.message : '';
-                if (code === 'email_invalido') throw new Error('Revisa el correo: parece incompleto.');
-                if (code === 'demasiadas_altas') throw new Error('Estamos recibiendo muchas solicitudes. Inténtalo en unos minutos.');
-                throw new Error('No pudimos guardar tu correo (error ' + res.status + '). Escríbenos y te apuntamos a mano.');
+                if (code === 'email_invalido') throw new Error('Check the email: it looks incomplete.');
+                if (code === 'demasiadas_altas') throw new Error('We are getting a lot of sign-ups. Try again in a few minutes.');
+                throw new Error('We could not save your email (error ' + res.status + '). Write to us and we will add you by hand.');
               });
             })
             .then(function () {
@@ -340,7 +339,7 @@ const description =
               stepDone.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
             .catch(function (err) {
-              fail(err && err.message ? err.message : 'No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.');
+              fail(err && err.message ? err.message : 'We could not connect. Check your connection and try again.');
               btn.disabled = false;
               btn.textContent = LABEL;
             });
