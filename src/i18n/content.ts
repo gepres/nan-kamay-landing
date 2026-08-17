@@ -51,7 +51,7 @@ const es = {
       { icon: 'lucide:clapperboard', title: 'Revive tu ruta', desc: 'Un replay animado del recorrido, con tus fotos y waypoints apareciendo donde los marcaste.' },
       { icon: 'lucide:image', title: 'Postal de tu ruta', desc: 'Convierte el recorrido en una imagen lista para compartir en Instagram o WhatsApp.' },
       { icon: 'lucide:compass', title: 'Explora rutas', desc: 'Descubre recorridos públicos de otros caminantes, con su perfil de elevación y sus fotos.' },
-      { icon: 'lucide:share-2', title: 'Comparte', desc: 'Publica rutas o manda tu ubicación en vivo por WhatsApp, SMS o enlace.' },
+      { icon: 'lucide:triangle-alert', title: 'Zonas de riesgo', desc: 'Consulta el riesgo por departamento —emergencias y seguridad— antes de salir, y míralo sobre el mapa.' },
     ],
   },
   how: {
@@ -77,8 +77,8 @@ const es = {
     {
       eyebrow: 'Seguridad',
       title: 'Sal tranquilo. Vuelve seguro.',
-      desc: 'Comparte un check-in o lanza un SOS por SMS aunque no tengas internet, y deja que te sigan en vivo con un simple enlace.',
-      bullets: ['Check-in y SOS por SMS (funcionan offline)', 'Enlace “sígueme” en vivo', 'Contactos de confianza, solo en tu dispositivo'],
+      desc: 'Comparte un check-in o lanza un SOS por SMS aunque no tengas internet, deja que te sigan en vivo con un simple enlace y revisa el riesgo de la zona antes de salir.',
+      bullets: ['Check-in y SOS por SMS (funcionan offline)', 'Enlace “sígueme” en vivo', 'Zonas de riesgo por departamento, también sin conexión', 'Contactos de confianza, solo en tu dispositivo'],
       mock: 'safety',
       src: '/screens/seguridad.jpeg',
       alt: 'Pantalla de seguridad de Ñan Kamay con los botones “Estoy bien” y “S.O.S.” y la lista de contactos de confianza.',
@@ -104,6 +104,7 @@ const es = {
       { q: '¿Para qué dispositivos está disponible?', a: 'Por ahora para Android. La versión de iOS está en camino.' },
       { q: '¿Cómo entro a la beta?', a: 'Ahora mismo estamos en prueba cerrada en Google Play. Pulsa “Únete a la beta” arriba (o entra a nankamay.trek-peru.com/beta), déjanos el correo de tu cuenta de Google y te damos acceso.' },
       { q: 'El GPS me zigzaguea, ¿se puede arreglar?', a: 'Le pasa a todos los GPS entre cerros y bajo los árboles: es física, no un fallo de la app. Por eso Ñan Kamay trae un editor de trazado: al volver puedes recortar el inicio, suavizar los tramos raros o pegar la ruta a senderos reales de OpenStreetMap.' },
+      { q: '¿De dónde salen las zonas de riesgo?', a: 'De fuentes públicas peruanas: declaratorias de emergencia por decreto supremo y estadísticas oficiales de seguridad, agregadas por departamento. Es información orientativa para ayudarte a planificar, no sustituye a las fuentes oficiales (INDECI, PNP) ni a la información local. Cada dato muestra su fecha y su fuente dentro de la app.' },
     ],
   },
   finalCta: {
@@ -165,7 +166,7 @@ const en: typeof es = {
       { icon: 'lucide:clapperboard', title: 'Relive your route', desc: 'An animated replay of your trip, with your photos and waypoints appearing where you marked them.' },
       { icon: 'lucide:image', title: 'Route postcard', desc: 'Turn your trip into an image ready to share on Instagram or WhatsApp.' },
       { icon: 'lucide:compass', title: 'Explore routes', desc: 'Discover public trails from other hikers, with their elevation profile and photos.' },
-      { icon: 'lucide:share-2', title: 'Share', desc: 'Publish routes or send your live location via WhatsApp, SMS or link.' },
+      { icon: 'lucide:triangle-alert', title: 'Risk zones', desc: 'Check the risk level by region —emergencies and safety— before you leave, and see it on the map.' },
     ],
   },
   how: {
@@ -191,8 +192,8 @@ const en: typeof es = {
     {
       eyebrow: 'Safety',
       title: 'Head out calm. Come back safe.',
-      desc: 'Share a check-in or fire an SOS over SMS even with no internet, and let people follow you live with a simple link.',
-      bullets: ['Check-in and SOS over SMS (work offline)', 'Live “follow me” link', 'Trusted contacts, only on your device'],
+      desc: 'Share a check-in or fire an SOS over SMS even with no internet, let people follow you live with a simple link, and check the area’s risk level before you leave.',
+      bullets: ['Check-in and SOS over SMS (work offline)', 'Live “follow me” link', 'Risk zones by region, offline too', 'Trusted contacts, only on your device'],
       mock: 'safety',
       src: '/screens/seguridad.jpeg',
       alt: 'Ñan Kamay safety screen with “I’m OK” and “S.O.S.” buttons and the trusted-contacts list.',
@@ -218,6 +219,7 @@ const en: typeof es = {
       { q: 'Which devices are supported?', a: 'Android for now. The iOS version is on the way.' },
       { q: 'How do I join the beta?', a: 'We’re currently in closed testing on Google Play. Tap “Join the beta” above (or go to nankamay.trek-peru.com/beta), leave us your Google account email and we’ll give you access.' },
       { q: 'My GPS track zigzags — can I fix it?', a: 'It happens to every GPS between ridges and under trees: it’s physics, not an app bug. That’s why Ñan Kamay ships a track editor: back home you can trim the start, smooth the odd bits or snap the route to real OpenStreetMap trails.' },
+      { q: 'Where do the risk zones come from?', a: 'From Peruvian public sources: state-of-emergency decrees and official safety statistics, aggregated by region. It is guidance to help you plan — it does not replace official sources (INDECI, PNP) or local knowledge. Each figure shows its date and source inside the app.' },
     ],
   },
   finalCta: {
